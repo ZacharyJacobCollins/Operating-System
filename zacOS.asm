@@ -2,7 +2,7 @@
 	org 0x7c00
 	jmp short start
 	nop
-bsOEM	db "OS423 v.0.1"               ; OEM String
+bsOEM	db "ZacsOS v.0.1"               ; OEM String
 
 start:
 	
@@ -18,7 +18,7 @@ start:
 				;Colors from 0: Black Blue Green Cyan Red Magenta Brown White
 				;Colors from 8: Gray LBlue LGreen LCyan LRed LMagenta Yellow BWhite
 
-;;printHello
+;;printWelcomeScreen
 	mov ah,13h		;Function 13h (display string), XT machine only
 	mov al,1		;Write mode is zero: cursor stay after last char
 	mov bh,0		;Use video page of zero
@@ -26,18 +26,31 @@ start:
 	mov cx,mlen		;Character string length
 	mov dh,0		;Position on row 0
 	mov dl,0		;And column 0
-	lea bp,[msg]	;Load the offset address of string into BP, es:bp
-					;Same as mov bp, msg  
+	lea bp,[msg]     	;Load the offset address of string into BP, es:bp
+			        ;Same as mov bp, msg  
 	int 10h
-
 	int 20h
 	
 
-msg db 'OS423, Yo boi Zacs OS ...',10,13,'$'
+;;get time
+;	mov eax, 13
+;	push eax
+;	mov ebx, esp
+;	int 0x80
+;	pop eax 
+	
+
+;;Variables
+test db 'Welcome to Zac',39,'s OS ...',10,13,'$'
+;testlen equ $-test
+
+msg db 'Welcome to Zac',39,'s OS ...',10,13,'$'
 mlen equ $-msg
 
+
+
 padding	times 510-($-$$) db 0		;to make MBR 512 bytes
-bootSig	db 0x55, 0xaa		;signature (optional)
+bootSig	db 0x55, 0xaa			;signature (optional)
 
 
 
