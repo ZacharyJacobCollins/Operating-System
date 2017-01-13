@@ -28,31 +28,42 @@ start:
 	mov dl,0		;And column 0
 	lea bp,[msg]     	;Load the offset address of string into BP, es:bp
 	
-			        ;Same as mov bp, msg  
-	int 10h
-	;int 20h
+			        ;Same as mov bp, msg  ?
+	int 10h			;Output
+
+
 
 ;printTime
-	mov ah,13h		;Function 13h (display string), XT machine only
-	mov al,1		;Write mode is zero: cursor stay after last char
-	mov bh,0		;Use video page of zero
-	mov bl,0ah		;Attribute (lightgreen on black)
-	mov cx,tlen 		;Character string length
-	mov dh,0		;Position on row 0
-	mov dl,0		;And column 0
-	lea bp,[tst]     	;Load the offset address of string into BP, es:bp
+	MOV AH, 2Ch
+	INT 21h
+
+	MOV AH, 0Eh
+
+	MOV AL, CH
+	INT 10h
+
+	MOV AL, 3Ah
+	INT 10h
+
+	MOV AL, CL
+	INT 10h
+
+	MOV AL, 3Ah
+	INT 10h
+
+	MOV AL, DH
+
 	
-			        ;Same as mov bp, msg  
-	int 10h
-	int 20h
+	int 10h			;Ouput
+	int 20h			;Terminates program
+
+
+
 		
 
-;;Variables
+;Variables
 
-tst db 'testing'
-tlen equ $-tst
-
-msg db 'Welcome to Zac',39,'s OS ...',10,13,'$'
+msg db 'Welcome to Zac',39,'s OS ...',10,13
 mlen equ $-msg
 
 

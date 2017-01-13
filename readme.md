@@ -14,3 +14,8 @@
 
 #Useful info on interrupts
 * https://courses.engr.illinois.edu/ece390/books/labmanual/graphics-int10h.html
+
+#Useful overview of asm with examples
+* http://cs.lmu.edu/~ray/notes/x86assembly/
+* tiny guide for x86 may have example for 1234 http://www.cs.dartmouth.edu/~sergey/cs258/tiny-guide-to-x86-assembly.pdf 
+
