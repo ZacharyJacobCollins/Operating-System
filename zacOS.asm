@@ -36,25 +36,50 @@ start:
 ;printTime
 	MOV AH, 2Ch
 	INT 21h
-
 	MOV AH, 0Eh
-
+	
+	;hours	
 	MOV AL, CH
-	INT 10h
+	mov al,ch      ; if ch has 12h
+	aam            ; ax will now be 0102h
+	or ax,3030h    ; converting into ascii - ax will now become 3132h
+	; you can now print the value in ax
+	mov cx,ax
+	mov dl,ch      ; to print on screen
+	mov ah,02h
+	int 21h
+	mov dl,cl	
+	int 21h
+	
+	;Print Colon
+	MOV DL,':'
+	MOV AH,02H
+	INT 21H
+	
 
-	MOV AL, 3Ah
-	INT 10h
 
-	MOV AL, CL
-	INT 10h
+	;minutes
+	MOV AL, Cl
+	mov al,cl      ; if ch has 12h
+	aam            ; ax will now be 0102h
+	or ax,3030h    ; converting into ascii - ax will now become 3132h
+	; you can now print the value in ax
+	mov cx,ax
+	mov dl,cl      ; to print on screen
+	mov ah,02h
+	int 21h
+	mov dl,cl	
+	int 21h
+	
+	;Print Colon
+	MOV DL,':'
+	MOV AH,02H
+	INT 21H
 
-	MOV AL, 3Ah
-	INT 10h
+		
 
-	MOV AL, DH
 
 	
-	int 10h			;Ouput
 	int 20h			;Terminates program
 
 
