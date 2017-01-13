@@ -27,30 +27,36 @@ start:
 	mov dh,0		;Position on row 0
 	mov dl,0		;And column 0
 	lea bp,[msg]     	;Load the offset address of string into BP, es:bp
+	
+			        ;Same as mov bp, msg  
+	int 10h
+	;int 20h
+
+;printTime
+	mov ah,13h		;Function 13h (display string), XT machine only
+	mov al,1		;Write mode is zero: cursor stay after last char
+	mov bh,0		;Use video page of zero
+	mov bl,0ah		;Attribute (lightgreen on black)
+	mov cx,tlen 		;Character string length
+	mov dh,0		;Position on row 0
+	mov dl,0		;And column 0
+	lea bp,[tst]     	;Load the offset address of string into BP, es:bp
+	
 			        ;Same as mov bp, msg  
 	int 10h
 	int 20h
-	
-
-;;get time
-;	mov eax, 13
-;	push eax
-;	mov ebx, esp
-;	int 0x80
-;	pop eax 
-	
+		
 
 ;;Variables
-test db 'Welcome to Zac',39,'s OS ...',10,13,'$'
-;testlen equ $-test
+
+tst db 'testing'
+tlen equ $-tst
 
 msg db 'Welcome to Zac',39,'s OS ...',10,13,'$'
 mlen equ $-msg
 
 
-
 padding	times 510-($-$$) db 0		;to make MBR 512 bytes
 bootSig	db 0x55, 0xaa			;signature (optional)
-
 
 
