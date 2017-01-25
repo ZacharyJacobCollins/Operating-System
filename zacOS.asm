@@ -1,8 +1,7 @@
-;bit16					; 16bit by default
 	org 0x7c00
 	jmp short start
 	nop
-bsOEM	db "ZacsOS v.0.1"               ; OEM String
+bsOEM	db "OS423 v.0.1"               ; OEM String
 
 start:
 	
@@ -18,84 +17,33 @@ start:
 				;Colors from 0: Black Blue Green Cyan Red Magenta Brown White
 				;Colors from 8: Gray LBlue LGreen LCyan LRed LMagenta Yellow BWhite
 
-;;printWelcomeScreen
+;;printHello
 	mov ah,13h		;Function 13h (display string), XT machine only
 	mov al,1		;Write mode is zero: cursor stay after last char
 	mov bh,0		;Use video page of zero
 	mov bl,0ah		;Attribute (lightgreen on black)
-	mov cx,topmlen		;Character string length
-	mov dh,0		;Position on row 0
-	mov dl,0		;And column 0
-	lea bp,[topmsg]     	;Load the offset address of string into BP, es:bp
-	
-			        ;Same as mov bp, msg  ?
-	int 10h			;Output
+	mov cx,mlen		;Character string length
+	mov dh,9		;Position on row 9 
+	mov dl,29		;And column 29 
+	lea bp,[msg] 		;Load the offset address of string into BP, es:bp
+					;Same as mov bp, msg  
+	int 10h
 
-
-
-;printTime
-	MOV AH, 2Ch
-	INT 21h
-	MOV AH, 0Eh
+	int 20h
 	
-	;hours	
-	MOV AL, CH
-	mov al,ch      ; if ch has 12h
-	aam            ; ax will now be 0102h
-	or ax,3030h    ; converting into ascii - ax will now become 3132h
-		       ; you can now print the value in ax
-	mov cx,ax
-	mov dl,ch      ; to print on screen
-	mov ah,02h
-	int 21h
-	mov dl,cl	
-	int 21h
-	
-		       ;Print Colon
-	MOV DL,':'
-	MOV AH,02H
-	INT 21H
+	;32 is space
+	;205 is double horizontal
+	;186 is double vertical 
+	;201 is top left corner
+	;200 is bot left corner 
+	;188 is bot right corner
+	;187 is top right corner
+	;30 across
+
 	
 
-	;minutes
-	MOV AL, Cl
-	mov al,cl      ; if ch has 12h
-	aam            ; ax will now be 0102h
-	or ax,3030h    ; converting into ascii - ax will now become 3132h
-	; you can now print the value in ax
-	mov cx,ax
-	mov dl,cl      ; to print on screen
-	mov ah,02h
-	int 21h
-	mov dl,cl	
-	int 21h
-	
-	;Print Colon
-	MOV DL,':'
-	MOV AH,02H
-	INT 21H
-
-		
-
-
-	
-	int 20h			;Terminates program
-
-
-
-		
-
-;Variables
-
-topmsg db 10,13,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,10,13, 'Welcome to Zac',39,'s OS ...',10,13,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,10,13
-topmlen equ $-topmsg
-
+msg db 201,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,187,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,186,32,'Zac',39,'s OS version 0.1',32,186,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,200,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,188,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,'$'
+mlen equ $-msg
 
 padding	times 510-($-$$) db 0		;to make MBR 512 bytes
-bootSig	db 0x55, 0xaa			;signature (optional)
-
-; int 16h
-; 205
-; clear screen 10h, 06h
-; blinking cursor - is a param insert
-; as mbr to start
+bootSig	db 0x55, 0xaa		;signature (optional)
