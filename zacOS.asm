@@ -23,10 +23,10 @@ start:
 	mov al,1		;Write mode is zero: cursor stay after last char
 	mov bh,0		;Use video page of zero
 	mov bl,0ah		;Attribute (lightgreen on black)
-	mov cx,mlen		;Character string length
+	mov cx,topmlen		;Character string length
 	mov dh,0		;Position on row 0
 	mov dl,0		;And column 0
-	lea bp,[msg]     	;Load the offset address of string into BP, es:bp
+	lea bp,[topmsg]     	;Load the offset address of string into BP, es:bp
 	
 			        ;Same as mov bp, msg  ?
 	int 10h			;Output
@@ -43,7 +43,7 @@ start:
 	mov al,ch      ; if ch has 12h
 	aam            ; ax will now be 0102h
 	or ax,3030h    ; converting into ascii - ax will now become 3132h
-	; you can now print the value in ax
+		       ; you can now print the value in ax
 	mov cx,ax
 	mov dl,ch      ; to print on screen
 	mov ah,02h
@@ -51,12 +51,11 @@ start:
 	mov dl,cl	
 	int 21h
 	
-	;Print Colon
+		       ;Print Colon
 	MOV DL,':'
 	MOV AH,02H
 	INT 21H
 	
-
 
 	;minutes
 	MOV AL, Cl
@@ -88,11 +87,15 @@ start:
 
 ;Variables
 
-msg db 'Welcome to Zac',39,'s OS ...',10,13
-mlen equ $-msg
+topmsg db 10,13,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,10,13, 'Welcome to Zac',39,'s OS ...',10,13,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,10,13
+topmlen equ $-topmsg
 
 
 padding	times 510-($-$$) db 0		;to make MBR 512 bytes
 bootSig	db 0x55, 0xaa			;signature (optional)
 
-
+; int 16h
+; 205
+; clear screen 10h, 06h
+; blinking cursor - is a param insert
+; as mbr to start
