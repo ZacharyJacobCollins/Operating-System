@@ -60,7 +60,7 @@ start:
 	mov al,cl      ; if ch has 12h
 	aam            ; ax will now be 0102h
 	or ax,3030h    ; converting into ascii - ax will now become 3132h
-	; you can now print the value in ax
+		       ; you can now print the value in ax
 	mov cx,ax
 	mov dl,cl      ; to print on screen
 	mov ah,02h

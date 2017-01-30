@@ -18,7 +18,7 @@ start:
   call cvtmin
   call cvtsec
   call dsptime
-
+  call L1;
   int 20h ;halt operation (VERY IMPORTANT!!!)
 
 cls:			 
@@ -32,6 +32,34 @@ cls:
   int 10H	;BIOS Interrupt 10h (video services)
   ret
 
+mov cx, 100
+L1:
+     push cx
+
+     ;MOV AX, @DATA                ; initialize DS
+     MOV DS, AX
+
+
+     ;mov BX,offset time           ; BX=offset address of string TIME
+
+     call time
+     call cvthrs
+     call cvtmin
+     call cvtsec
+     call dsptime
+
+     call cls 
+
+     ;MOV DX,offset time           ; DX=offset address of string PROMPT
+     MOV AH, 09H                  ; print the string PROMPT
+     ;INT 21H                                          
+
+     MOV AH, 4CH                  ; return control to DOS
+     ;INT 21H
+
+     pop cx
+
+     loop L1
 
 dspmsg: 
   mov ah,13h	;function 13h (Display String)
