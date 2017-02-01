@@ -7,9 +7,6 @@ start:
 	
 	call cls;
 	call printSplash;
-	;call keypressclear;
-	;call cls;
-	;call printDollar;
 	call second;
 	int 20h;	
 
@@ -53,29 +50,6 @@ cls:
 	pop eax;		; return val to ah, al
 	ret;   			; return to calling mode
 
-
-printDollar:
-	mov ah,13h		;Function 13h (display string), XT machine only
-  	mov al,1		;Write mode is zero: cursor stay after last char
-	mov bh,0		;Use video page of zero
-	mov bl,0ah		;Attribute (lightgreen on black)
-	mov cx,dollarLen        ;Character string length
-	mov dh,0		;Position on row 9 
-	mov dl,0		;And column 29 
-	lea bp,[dollar] 	;Load the offset address of string into BP, es:bp
-				;Same as mov bp, msg  
-	int 10h
-	ret
-
-
-keypressclear:
-	push eax;
-	mov ah, 00h;
-	int 16h;
-	pop eax;
-	ret;
-
-
 printSplash:
 	mov ah,13h		;Function 13h (display string), XT machine only
 	mov al,1		;Write mode is zero: cursor stay after last char
@@ -100,8 +74,8 @@ printSplash:
 	;30 across
 	
 
-; The message to print
-msg db 201,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,187,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,186,32,'Zac',39,'s OS version 0.1',32,186,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,200,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,188,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,'$'
+
+msg db 201,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,187,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,186,32,'Zac',39,'s OS version 0.1',32,186,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,200,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,188,10,13,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,'$';
 
 mlen equ $-msg
 
