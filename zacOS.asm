@@ -8,9 +8,31 @@ start:
 	call cls;
 	call printSplash;
 	call keypressclear;
+	call second;
 	call cls;
 	call printDollar;
 	int 20h;	
+
+second: ;jump to of sector 37, and run the code there
+	push eax;
+  	push ebx;
+
+  	xor bx, bx;
+
+  	mov bx, 0x5678;
+  	mov es, bx;
+  	mov bx, 0x1234;
+
+  	mov ah, 0x02;
+  	mov al, 0x01;
+  	mov ch, 0x01;
+  	mov cl, 0x02;
+  	mov dh, 0x00;
+  	mov dl, 0x00;
+  	int 0x13;
+  	jc second;
+  	jmp 0x5678:0x1234;
+  	ret;
 
 cls:
 	push ebx;	
