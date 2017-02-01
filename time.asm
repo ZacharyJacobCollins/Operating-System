@@ -14,16 +14,18 @@ start:
   call cvtyear
   call dspdate
   
-  call timeLoop
+  ;call timeLoop
   call cvthrs
   call cvtmin
   call cvtsec
   call dsptime
   call keypressclear
-  call cls;
   
 
-  int 20h ;halt operation (VERY IMPORTANT!!!)
+;continueFromLoop: 
+  call cls;
+  jmp $;
+  int 20h;halt operation (VERY IMPORTANT!!!)
 
 timeLoop: 
 	myLoop: 
@@ -32,15 +34,14 @@ timeLoop:
 		call cvtmin
   		call cvtsec
   		call dsptime
-		
+		mov ah, 01h;
+		int 16h;
+		;jnz continueFromLoop;		
   		loop myLoop;
  	ret;       
 
-
 keypressclear:
 	push eax;
-	mov ah, 00h;
-	int 16h;
 	pop eax;
 
 printDollar:
@@ -66,12 +67,12 @@ cls:
 	mov bh,0ah		;Attribute (lightgreen on black) 
 	mov ch,0		;Upper left row is zero
 	mov cl,0		;Upper left column is zero
-	mov dh,24		;Lower left row is 24
-	mov dl,79		;Lower left column is 79
+	mov dh,0		;Lower left row is 24
+	mov dl,0		;Lower left column is 79
 	int 10h			;BIOS Interrupt 10h (video services)
 				;Colors from 0: Black Blue Green Cyan Red Magenta Brown White
 				;Colors from 8: Gray LBlue LGreen LCyan LRed LMagenta Yellow BWhite
-
+	
 	pop ebx;	
 	pop eax;		; return val to ah, al
 	ret;   			; return to calling mode

@@ -4,7 +4,6 @@
 bsOEM	db "OS423 v.0.1"               ; OEM String
 
 start:
-	
 	call cls;
 	call printSplash;
 	call second;
@@ -45,7 +44,7 @@ cls:
 	int 10h			;BIOS Interrupt 10h (video services)
 				;Colors from 0: Black Blue Green Cyan Red Magenta Brown White
 				;Colors from 8: Gray LBlue LGreen LCyan LRed LMagenta Yellow BWhite
-
+	
 	pop ebx;	
 	pop eax;		; return val to ah, al
 	ret;   			; return to calling mode
