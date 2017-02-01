@@ -14,7 +14,7 @@ start:
   call cvtyear
   call dspdate
   
-  call time
+  call timeLoop
   call cvthrs
   call cvtmin
   call cvtsec
@@ -24,6 +24,17 @@ start:
   
 
   int 20h ;halt operation (VERY IMPORTANT!!!)
+
+timeLoop: 
+	myLoop: 
+	 	call time
+  		call cvthrs
+		call cvtmin
+  		call cvtsec
+  		call dsptime
+		
+  		loop myLoop;
+ 	ret;       
 
 
 keypressclear:
