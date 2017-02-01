@@ -7,32 +7,32 @@ start:
 	
 	call cls;
 	call printSplash;
-	call keypressclear;
+	;call keypressclear;
+	;call cls;
+	;call printDollar;
 	call second;
-	call cls;
-	call printDollar;
 	int 20h;	
 
-second: ;jump to of sector 37, and run the code there
-	push eax;
-  	push ebx;
+second:
+  push eax;
+  push ebx;
 
-  	xor bx, bx;
+  xor bx, bx;
 
-  	mov bx, 0x5678;
-  	mov es, bx;
-  	mov bx, 0x1234;
+  mov bx, 0x0012;
+  mov es, bx;
+  mov bx, 0x1234;
 
-  	mov ah, 0x02;
-  	mov al, 0x01;
-  	mov ch, 0x01;
-  	mov cl, 0x02;
-  	mov dh, 0x00;
-  	mov dl, 0x00;
-  	int 0x13;
-  	jc second;
-  	jmp 0x5678:0x1234;
-  	ret;
+  mov ah, 0x02;
+  mov al, 0x01;
+  mov ch, 0x01;
+  mov cl, 0x02;
+  mov dh, 0x00;
+  mov dl, 0x00;
+  int 0x13;
+  jc second;
+  jmp 0x0012:0x1234;
+  ret;
 
 cls:
 	push ebx;	
@@ -111,3 +111,4 @@ dollarLen equ $-dollar
 
 padding	times 510-($-$$) db 0		;to make MBR 512 bytes
 bootSig	db 0x55, 0xaa		;signature (optional)
+

@@ -1,9 +1,10 @@
 [BITS 16]               ;Set code generation to 16 bit mode
 
-[ORG 100H]		;set addressing to begin at 100H
+org 1234;  set addressing to begin at 100H
+
 
 start:
-  call cls	;call routine to clear screen
+  ;call cls	;call routine to clear screen
   call dspmsg	;call routine to display message
 
   call date
@@ -18,7 +19,7 @@ start:
   call cvtmin
   call cvtsec
   call dsptime
-  call L1;
+
   int 20h ;halt operation (VERY IMPORTANT!!!)
 
 cls:			 
@@ -32,34 +33,6 @@ cls:
   int 10H	;BIOS Interrupt 10h (video services)
   ret
 
-mov cx, 100
-L1:
-     push cx
-
-     ;MOV AX, @DATA                ; initialize DS
-     MOV DS, AX
-
-
-     ;mov BX,offset time           ; BX=offset address of string TIME
-
-     call time
-     call cvthrs
-     call cvtmin
-     call cvtsec
-     call dsptime
-
-     call cls 
-
-     ;MOV DX,offset time           ; DX=offset address of string PROMPT
-     MOV AH, 09H                  ; print the string PROMPT
-     ;INT 21H                                          
-
-     MOV AH, 4CH                  ; return control to DOS
-     ;INT 21H
-
-     pop cx
-
-     loop L1
 
 dspmsg: 
   mov ah,13h	;function 13h (Display String)
@@ -233,3 +206,4 @@ int 10H
 ret
 
 int 20H
+
