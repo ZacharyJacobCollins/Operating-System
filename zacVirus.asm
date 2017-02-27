@@ -1,0 +1,65 @@
+
+	;bit16					; 16bit by default
+	org 0x7c00
+	jmp short start
+	nop
+bsOEM	db "OS423 v.0.1"               ; OEM String
+
+start:
+		
+;;cls
+	mov bh, 0ah		; bh has color attribute
+	mov cl, bh		; needs es:bx for display, save bh value	
+	
+	mov bx,0xb800		;direct video memory access 0xB8000
+	mov es,bx
+	xor bx,bx		;es:bx : 0xb8000
+	mov dh,0		;row from 0 to 24
+	mov dl,0		;col from 0 to 79
+		
+.loop:
+	mov byte [es:bx], ' '	;char
+	inc bx
+	mov byte [es:bx], cl
+	inc bx
+
+.next:		
+	inc dl
+	cmp dl,80		;col 0-79
+	jne .loop
+	mov dl,0
+	inc dh
+	cmp dh,25		;row 0-24
+	jne .loop		
+		
+
+print:
+	mov bl, 0ah		;color
+	mov cx, mlen
+	lea bp, [msg]
+
+	mov al, bl		;save color
+	mov bx,0xb800	;direct video memory access 0xB8000
+	mov es,bx
+	xor bx,bx
+				
+.loop:
+	mov ah, byte [ds:bp]
+	mov byte [es:bx], ah	;char
+	inc bx
+	mov byte [es:bx], al	;attribute 
+	inc bx
+
+.next:	
+	inc bp
+	dec cx
+	jne .loop		
+
+	
+	int 20h
+
+msg db 'Hello 423'
+mlen equ $-msg	
+	
+padding	times 510-($-$$) db 0		;to make MBR 512 bytes
+bootSig	db 0x55, 0xaa		;signature (optional)
