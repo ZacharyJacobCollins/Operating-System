@@ -6,12 +6,12 @@
 	org 0x7c00
 	jmp short start
 	nop
-bsOEM	db "OS423 v.0.1"               ; OEM String
+bsOEM	db "OS423 v.0.1"       	; OEM String
 
 start:
 		
 ;;cls
-	mov bh, 0ah		; bh has color attribute
+	mov cl, 0ah		; bh has color attribute
 	mov cl, bh		; needs es:bx for display, save bh value	
 	
 	mov bx,0xb800		;direct video memory access 0xB8000
@@ -21,17 +21,17 @@ start:
 	mov dl,0		;col from 0 to 79
 		
 .loop:
-	mov byte [es:bx], ' '	;char
+	mov byte [es:bx], ''	;char
 	inc bx
 	mov byte [es:bx], cl
 	inc bx
 
 .next:		
-	inc dl
+	inc dl 			;dl is the length/row movement.
 	cmp dl,80		;col 0-79
-	jne .loop
-	mov dl,0
-	inc dh
+	jne .loop		;go back to .loop
+	mov dl,0		;
+	inc dh			;go down vertically a line 
 	cmp dh,25		;row 0-24
 	jne .loop		
 		
@@ -43,7 +43,7 @@ print:
 	lea bp, [msg]
 
 	mov al, bl		;save color
-	mov bx,0xb800	;direct video memory access 0xB8000
+	mov bx,0xb800		;direct video memory access 0xB8000
 	mov es,bx
 	xor bx,bx
 				
