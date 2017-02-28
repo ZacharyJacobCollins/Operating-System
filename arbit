@@ -1,5 +1,3 @@
-
-	;bit16					; 16bit by default
 	org 0x7c00
 	jmp short start
 	nop
@@ -18,7 +16,7 @@ start:
 	mov dl,0		;col from 0 to 79
 		
 .loop:
-	mov byte [es:bx], ' '	;char
+	mov byte [es:bx], ''	;char
 	inc bx
 	mov byte [es:bx], cl
 	inc bx
@@ -34,12 +32,12 @@ start:
 		
 
 print:
-	mov bl, 0ah		;color
+	mov bl, 0bh		;color
 	mov cx, mlen
 	lea bp, [msg]
 
 	mov al, bl		;save color
-	mov bx,0xb800	;direct video memory access 0xB8000
+	mov bx,0xb800		;direct video memory access 0xB8000
 	mov es,bx
 	xor bx,bx
 				
@@ -62,4 +60,4 @@ msg db 'Hello 423'
 mlen equ $-msg	
 	
 padding	times 510-($-$$) db 0		;to make MBR 512 bytes
-bootSig	db 0x55, 0xaa		;signature (optional)
+bootSig	db 0x55, 0xaa			;signature (optional)
